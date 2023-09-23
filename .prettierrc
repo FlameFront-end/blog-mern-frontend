@@ -7,8 +7,11 @@
   "jsxSingleQuote": true,
   "arrowParens": "avoid",
   "importOrder": [
+    "react",
     "<THIRD_PARTY_MODULES>",
+    "redux/",
     "hooks/",
+    "helpers/",
     "app",
     "pages/",
     "entities/*",
