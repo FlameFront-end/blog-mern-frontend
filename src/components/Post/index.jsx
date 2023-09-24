@@ -1,11 +1,12 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
 import DeleteIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import IconButton from '@mui/material/IconButton'
 import clsx from 'clsx'
-import React from 'react'
-import { Link } from 'react-router-dom'
 
 import { UserInfo } from '../UserInfo'
 
@@ -34,10 +35,10 @@ export const Post = ({
 		<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
 			{isEditable && (
 				<div className={styles.editButtons}>
-					<IconButton color='primary'>
+					<IconButton color='primary' style={{ zIndex: 30 }}>
 						<EditIcon />
 					</IconButton>
-					<IconButton color='secondary'>
+					<IconButton color='secondary' style={{ zIndex: 30 }}>
 						<DeleteIcon />
 					</IconButton>
 				</div>

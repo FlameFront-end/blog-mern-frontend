@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
-import { fetchAuth, fetchRegister, selectIsAuth } from '../../redux/slices/auth'
+import { fetchRegister, selectIsAuth } from '../../redux/slices/auth'
 
 import styles from './Login.module.scss'
 
