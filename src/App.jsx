@@ -11,11 +11,11 @@ import { AddPost, FullPost, Home, Login, Registration } from './pages'
 
 function App() {
 	const dispatch = useDispatch()
-	const isAuth = useSelector(selectIsAuth)
 
 	useEffect(() => {
 		dispatch(fetchAuthMe())
 	}, [])
+
 	return (
 		<>
 			<Header />

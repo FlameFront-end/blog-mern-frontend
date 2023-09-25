@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
@@ -7,6 +8,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import IconButton from '@mui/material/IconButton'
 import clsx from 'clsx'
+
+import { fetchRemovePost } from '../../redux/slices/Posts'
 
 import { UserInfo } from '../UserInfo'
 
@@ -27,8 +30,16 @@ export const Post = ({
 	isLoading,
 	isEditable
 }) => {
+	const dispatch = useDispatch()
+
 	if (isLoading) {
 		return <PostSkeleton />
+	}
+
+	const onClickRemove = () => {
+		if (window.confirm('Вы действительно хотите удалить эту статью?')) {
+			dispatch(fetchRemovePost(id))
+		}
 	}
 
 	return (
@@ -38,7 +49,11 @@ export const Post = ({
 					<IconButton color='primary' style={{ zIndex: 30 }}>
 						<EditIcon />
 					</IconButton>
-					<IconButton color='secondary' style={{ zIndex: 30 }}>
+					<IconButton
+						color='secondary'
+						style={{ zIndex: 30 }}
+						onClick={onClickRemove}
+					>
 						<DeleteIcon />
 					</IconButton>
 				</div>
