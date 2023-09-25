@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import SimpleMDE from 'react-simplemde-editor'
 
 import Button from '@mui/material/Button'
@@ -16,6 +16,7 @@ import styles from './AddPost.module.scss'
 import 'easymde/dist/easymde.min.css'
 
 export const AddPost = () => {
+	const { id } = useParams()
 	const navigate = useNavigate()
 
 	const isAuth = useSelector(selectIsAuth)
@@ -28,6 +29,7 @@ export const AddPost = () => {
 
 	const inputFileRef = useRef(null)
 
+	const isEditing = Boolean(id)
 	const handleChangeFile = async event => {
 		try {
 			const formData = new FormData()
@@ -62,16 +64,35 @@ export const AddPost = () => {
 				text
 			}
 
-			const { data } = await axios.post('/posts', fields)
+			const { data } = isEditing
+				? await axios.patch(`/posts/${id}`, fields)
+				: await axios.post('/posts', fields)
 
-			const id = data._id
+			const _id = isEditing ? id : data._id
 
-			navigate(`/posts/${id}`)
+			navigate(`/posts/${_id}`)
 		} catch (e) {
 			console.error(e)
 			alert('Ошибка при создании статьи')
 		}
 	}
+
+	useEffect(() => {
+		if (id) {
+			axios
+				.get(`/posts/${id}`)
+				.then(({ data }) => {
+					setTitle(data.title)
+					setText(data.text)
+					setTags(data.tags.join(','))
+					setImageUrl(data.imageUrl)
+				})
+				.catch(err => {
+					console.warn(err)
+					alert('Ошибка при получении статьи')
+				})
+		}
+	}, [])
 
 	const options = useMemo(
 		() => ({
@@ -149,7 +170,7 @@ export const AddPost = () => {
 			/>
 			<div className={styles.buttons}>
 				<Button onClick={onSubmit} size='large' variant='contained'>
-					Опубликовать
+					{isEditing ? 'Сохранить' : 'Опубликовать'}
 				</Button>
 				<a href='/'>
 					<Button size='large'>Отмена</Button>
